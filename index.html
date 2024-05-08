@@ -1,0 +1,163 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My first leaflet</title>
+<!-- link css leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<!-- link js leaflet -->
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
+
+<style>
+body {
+padding: 0;
+margin: 0;
+}
+
+html,
+body,
+#map {
+height: 100%;
+width: 100%;
+}
+</style>
+
+</head>
+
+<body>
+<!-- แบ่งส่วนหน้าจอ -->
+<div id="map" style="width: 100%; height: 100%"></div>
+<script>
+//set view map
+var map = L.map('map').setView([13.636888607387666, 100.7455482434715], 10);
+
+//import based map
+var OSM = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+maxZoom: 18,
+attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors'
+}).addTo(map);
+
+var CyclOSM = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var OpenStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var Topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+}).addTo(map);
+
+var OPNVKarte = L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var baseLayers = {
+"OSM" : OSM,
+"CyclOSM": CyclOSM,
+"OpenStreetMap": OpenStreetMap,
+"Topo": Topo,
+"OPNVKarte": OPNVKarte,
+}
+L.control.layers(baseLayers).addTo(map);
+
+//การเพิ่มข้อข้อมูลลงบนแผนที่
+var point = L.marker([13.636888607387666, 100.7455482434715],
+{
+
+draggable: true, // Make the icon dragable
+title: 'สมุทรปราการ', // Add a title
+
+opacity: 1.5 // Adjust the opacity
+}
+).addTo(map);
+
+// การเพิ่มวงกลม
+// var point = L.circleMarker(
+// [13.636888607387666, 100.7455482434715],
+// {title :'swu',
+// radius: 50,
+// color: "blue",
+// fillColor: "red"}
+// ).addTo(map);
+
+//และข้อมูลลงในแผนที่
+point.bindPopup("<b>สมุทรปราการ</b><br>ภาคกลาง")
+.openPopup();
+
+//แสดงข้อมูลหลายจุด
+var swu = [
+// ["Faculty of Humanities", 13.747068507702805, 100.56527196576859],
+// ["Faculty of Socail Sciences", 13.744517046460741, 100.56397426787937],
+// ["Grad school", 13.743816164487734, 100.56402242897477],
+// ["Post office", 13.746488112796877, 100.56510554978775],
+// ["Canteen", 13.744359892491058, 100.56640407260664],
+
+["พิพิธภัณฑ์ช้างเอราวัณ", 13.6219390000,	100.5899200000],
+["เมืองโบราณ", 13.5450670000,	100.6368560000],
+["วัดอโศการาม",	13.5474062140,	100.6080461290],
+["ศูนย์พักผ่อนบางปู", 13.5235690000,	100.6482080000],
+["พระสมุทรเจดีย์", 13.5991940000,	100.5897780000],
+["วัดบางพลีใหญ่ใน", 13.6063890000,	100.7147220000],
+["ตลาดน้ำบางพลีเก่า", 13.6058330000,	100.7194440000],
+["วัดสักละ", 13.5142200000,	100.7735300000],
+["สวนศรีนครเขื่อนขันธ์", 13.7005560000,	100.5997220000],
+["วัดบางพลีใหญ่กลาง", 13.6075000000,	100.7141670000],
+];
+
+//เปลี่ยน icon
+var greenIcon = L.icon({ iconUrl: 'https://media.discordapp.net/attachments/1114087065152405514/1237844764729151589/tree.png?ex=663d2045&is=663bcec5&hm=f35bec292924aa3c75d5906e30cc36c7c04c231d355356d4f429d47d94e4e4ae&=&format=webp&quality=lossless&width=640&height=640', 
+
+iconSize: [40, 50], // size of the icon
+shadowSize: [50, 64], // size of the shadow
+iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+shadowAnchor: [4, 62], // the same for the shadow
+popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+for (var i = 0; i < swu.length; i++) {
+marker = new L.marker([swu[i][1], swu[i][2]], {icon: greenIcon})
+.bindPopup(swu[i][0])
+.addTo(map);
+}
+
+//description/Legend
+var legend = L.control({position: "bottomright"});
+legend.onAdd = function(map) {
+var div = L.DomUtil.create("div", "legend");
+div.innerHTML =
+
+'<p><b>Srinakharinwirot university</b></p><hr>' +
+'Created by Sarocha Sarobol<br>' +
+'ID: 64103010316<br>'+
+'<img src="https://unity.swu.ac.th/wp-content/uploads/2020/07/SWU_Logo_EN_Color.pngห" width = 20%>';
+return div;
+};
+
+
+var legendd = L.control({position: "bottomleft"});
+legendd.onAdd = function(map) {
+var div = L.DomUtil.create("div", "legendd");
+div.innerHTML =
+'<b>คำอธิบายสัญลักษณ์</b><hr>' +
+'<p>สถานที่ท่องเที่ยว</p>'+
+'<img src="https://media.discordapp.net/attachments/1114087065152405514/1237844764729151589/tree.png?ex=663d2045&is=663bcec5&hm=f35bec292924aa3c75d5906e30cc36c7c04c231d355356d4f429d47d94e4e4ae&=&format=webp&quality=lossless&width=640&height=640" width = 30%>'; 
+return div;
+};
+legend.addTo(map);
+legendd.addTo(map);
+
+</script>
+
+</body>
+
+</html>
